@@ -1,5 +1,5 @@
-# Flutter Todo app
-A new Flutter application for online furniture shopping. 
+# Flutter Scheduler
+A new Flutter application for Managing your Important Schedules!
 
 # Tutorial
 
