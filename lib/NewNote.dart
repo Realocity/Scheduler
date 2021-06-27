@@ -23,7 +23,7 @@ class _newNoteState extends State<newNote> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xfff96060),
+        backgroundColor: Color(0xff3757F3),
         elevation: 0,
         title: Text("New Note", style: TextStyle(
             fontSize: 25
@@ -42,7 +42,7 @@ class _newNoteState extends State<newNote> {
           children: [
             Container(
               height: 30,
-              color: Color(0xfff96060),
+              color: Color(0xff3757F3),
             ),
             Positioned(
               bottom: 0,

@@ -4,22 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:scheduler/BottomBar/bottom_task_bar.dart';
+import 'package:scheduler/Dashboard/BottomBar/bottom_task_bar.dart';
 import '../Dashboard/HomePage.dart';
 import 'login_page.dart';
 
-class Onboarding extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'avenir'),
-      home: onboarding(),
-    );
-  }
-}
 
 class onboarding extends StatefulWidget {
+
   @override
   _onboardingState createState() => _onboardingState();
 }
@@ -183,6 +174,7 @@ class _onboardingState extends State<onboarding> {
       ),
     );
   }
+
 
   AnimatedContainer getIndicator(int pageNo) {
     return AnimatedContainer(

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:scheduler/BottomBar/bottom_task_bar.dart';
+import 'package:scheduler/Dashboard/BottomBar/bottom_task_bar.dart';
 import 'package:scheduler/Dashboard/HomePage.dart';
 
 class SignUp extends StatefulWidget {

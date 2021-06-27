@@ -23,23 +23,34 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  table_calendar: ^2.2.3
-  flutter_slidable: ^0.5.7
+  table_calendar:
+  shared_preferences:
+  flutter_slidable:
   app_icon_changer: ^1.0.6
-  firebase_core:
-  firebase_auth:
   google_sign_in:
   get: ^4.1.4
   get_storage:
+  flutter_icons:
+  google_fonts:
+  fluttertoast:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
+  firedart: ^0.9.0+1
+  syncfusion_flutter_calendar:
+  intl:
+  googleapis_auth:
+  googleapis:
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  cupertino_icons:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  change_app_package_name: ^0.1.3
+  change_app_package_name:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:scheduler/BottomBar/bottom_task_bar.dart';
+import 'package:scheduler/Dashboard/BottomBar/bottom_task_bar.dart';
 import 'package:scheduler/Dashboard/HomePage.dart';
 import 'package:scheduler/Login/Onboarding.dart';
 
@@ -38,8 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     var uid = dataCount.read("uid");
     if (uid == null || uid == "") {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Onboarding()));
-
+          context, MaterialPageRoute(builder: (context) => onboarding()));
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomBar()));

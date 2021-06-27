@@ -25,7 +25,7 @@ class _checkListState extends State<checkList> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xfff96060),
+        backgroundColor: Color(0xff3757F3),
         elevation: 0,
         title: Text("New CheckList", style: TextStyle(
             fontSize: 25
@@ -44,7 +44,7 @@ class _checkListState extends State<checkList> {
           children: [
             Container(
               height: 30,
-              color: Color(0xfff96060),
+              color: Color(0xff3757F3),
             ),
             Positioned(
               bottom: 0,

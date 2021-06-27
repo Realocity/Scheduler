@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:scheduler/Dashboard/BottomBar/bottom_task_bar.dart';
 import 'package:scheduler/Dashboard/HomePage.dart';
 import 'package:scheduler/Login/sign_up_page.dart';
 import 'Forgotpassword.dart';
-
+import 'package:firedart/firestore/models.dart' as yo;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,6 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore databaseReference = FirebaseFirestore.instance;
+  final yo.CollectionReference postsRef =
+      Firestore.instance.collection('/schedule');
 
   @override
   Widget build(BuildContext context) {
@@ -94,19 +100,32 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: 80,
+                  height: 50,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => SignUp())),
+                      child: Text(
+                        "Create New Account",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    Spacer(),
                     InkWell(
                       onTap: openForgotPassword,
                       child: Text(
                         "Forgot Password?",
                         style: TextStyle(fontSize: 16),
                       ),
-                    )
+                    ),
                   ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [],
                 ),
                 SizedBox(
                   height: 80,
@@ -124,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 120),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: Color(0xff80DDF6).withOpacity(0.5),
+                          color: Color(0xff3757F3).withOpacity(0.5),
                           boxShadow: [
                             BoxShadow(
                                 color: Colors.black.withOpacity(0.2),
@@ -154,16 +173,34 @@ class _LoginPageState extends State<LoginPage> {
 
   Future signInWithEmail() async {
     try {
-      final dataCount = GetStorage();   // instance of getStorage class
+      final dataCount = GetStorage(); // instance of getStorage class
 
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-              email: emailController.text.trim(), password: passwordController.text.trim());
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
 
       if (userCredential.user.uid.isNotEmpty) {
         dataCount.write("uid", userCredential.user.uid);
+        databaseReference
+            .collection("schedule")
+            .doc(userCredential.user.uid.toString())
+            .get() .then((value) {
+              if(value.data()!=null){
+                print(value.data());
+              }else{
+                Map<String, dynamic> postData = new Map<String, dynamic>();
+                postData['name'] = userCredential.user.displayName;
+                postData['email'] = userCredential.user.email;
+               // postData['password'] = userCredential.user.password;
+                postsRef.document(userCredential.user.uid).create(postData);
+              }
+
+        });
+
+        // databaseReference.collection("schedule").doc().then((value) {});
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => BottomBar()));
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -175,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
           "User Not Found",
           textAlign: TextAlign.center,
         )));
-      } else if (e.code == "invalid-email"||e.code=="wrong-password") {
+      } else if (e.code == "invalid-email" || e.code == "wrong-password") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Incorrect Email Id/ Password",
                 textAlign: TextAlign.center)));

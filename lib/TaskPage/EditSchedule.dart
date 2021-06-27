@@ -9,7 +9,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:scheduler/Util/button.dart';
 import 'package:scheduler/Util/input_field.dart';
 import 'package:firedart/firestore/models.dart' as yo;
-
 import 'package:scheduler/Util/theme.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -288,7 +287,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 children: [
                   _colorChips(),
                   MyButton(
-                    label: "Create Schedule",
+                    label: "Update Schedule",
                     onTap: () {
                       // print("All Values will show under this ");
                       // print("Title -  ${_titleController.text} ");

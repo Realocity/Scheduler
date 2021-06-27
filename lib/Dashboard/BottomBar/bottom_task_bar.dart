@@ -13,7 +13,7 @@ class _BottomBarState extends State<BottomBar> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Map<String, Object>> _pages = [
     {'page': HomePage(), 'title': 'Task'},
-    {'page': CalendarPage(), 'title': 'Calendar'},
+    {'page': DynamicEvent(), 'title': 'Calendar'},
     {'page': Setting(), 'title': 'Setting'},
   ];
   PageController _pageController = PageController();
@@ -30,12 +30,12 @@ class _BottomBarState extends State<BottomBar> {
           borderRadius: BorderRadius.circular(30),
           color: Colors.white,
           boxShadow: [
-            BoxShadow(color: Colors.redAccent, spreadRadius: 3),
+            BoxShadow(color: Colors.lightBlue, spreadRadius: 3),
           ],
         ),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
-          selectedItemColor: Colors.redAccent,
+          selectedItemColor: Colors.blueAccent,
           currentIndex: _currentIndex,
           onTap: onTapTab,
           items: [

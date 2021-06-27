@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'Splash_Page/splash_screen.dart';
 
@@ -11,6 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  Firestore.initialize("scheduler-5952b");
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -26,7 +28,7 @@ Future<void> main() async {
           height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.redAccent,
+            color: Colors.blueAccent,
           ),
           child: Scaffold(
             backgroundColor: Colors.white,
@@ -52,4 +54,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

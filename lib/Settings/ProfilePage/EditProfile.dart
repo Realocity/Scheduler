@@ -1,5 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:scheduler/Settings/SettingsPage.dart';
+import 'package:firedart/firestore/models.dart' as yo;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsUI extends StatelessWidget {
   @override
@@ -18,7 +24,20 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class settings_pageState extends State<EditProfilePage> {
+  final databaseReference = FirebaseFirestore.instance;
   bool showPassword = false;
+  TextEditingController firstNameController = TextEditingController();
+  String uid;
+  String name;
+  String email;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStorageData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +47,17 @@ class settings_pageState extends State<EditProfilePage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.green,
+            color: Colors.blueAccent,
           ),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
             icon: Icon(
               Icons.settings,
-              color: Colors.green,
+              color: Colors.blueAccent,
             ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => Setting()));
-            },
+            onPressed: () => Navigator.pop(context),
           ),
         ],
       ),
@@ -81,7 +97,7 @@ class settings_pageState extends State<EditProfilePage> {
                           image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
+                                "https://i.pinimg.com/564x/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.jpg",
                               ))),
                     ),
                     Positioned(
@@ -96,7 +112,7 @@ class settings_pageState extends State<EditProfilePage> {
                               width: 4,
                               color: Theme.of(context).scaffoldBackgroundColor,
                             ),
-                            color: Colors.green,
+                            color: Colors.blueAccent,
                           ),
                           child: Icon(
                             Icons.edit,
@@ -109,10 +125,9 @@ class settings_pageState extends State<EditProfilePage> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Full Name", "Dor Alex", false),
-              buildTextField("E-mail", "alexd@gmail.com", false),
+              buildTextField("Full Name", "Enter Your Name", false),
+              buildTextField("E-mail", "Enter Your Register Email", false),
               buildTextField("Password", "********", true),
-              buildTextField("Location", "TLV, Israel", false),
               SizedBox(
                 height: 35,
               ),
@@ -132,7 +147,7 @@ class settings_pageState extends State<EditProfilePage> {
                   ),
                   RaisedButton(
                     onPressed: () {},
-                    color: Colors.green,
+                    color: Colors.blueAccent,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
@@ -154,8 +169,42 @@ class settings_pageState extends State<EditProfilePage> {
     );
   }
 
+  void firstNameAvailableValidate() async {
+    final dataCount = GetStorage();
+    //Return String
+    uid = await dataCount.read("uid");
+
+    try {
+      databaseReference.collection("schedule").doc(uid.toString()).update({
+        "firstName": firstNameController.text.trim(),
+      }).then((_) {
+        dataCount.write("name", firstNameController.text.trim());
+        Fluttertoast.showToast(
+            msg: "Name Updated Successfully ",
+            // toastLength: Toast,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 14);
+
+        // Navigator.pushReplacement(
+        //     context, DownSlideNavigation( AccountScreen()));
+      });
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+          msg: "$e",
+          // toastLength: Toast,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14);
+    }
+  }
+
   Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+      String lableText, String placeholder, bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
@@ -163,19 +212,20 @@ class settings_pageState extends State<EditProfilePage> {
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
-              onPressed: () {
-                setState(() {
-                  showPassword = !showPassword;
-                });
-              },
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: Colors.grey,
-              ),
-            )
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                  )
                 : null,
             contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
+            labelText: '',
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: placeholder,
             hintStyle: TextStyle(
@@ -185,5 +235,15 @@ class settings_pageState extends State<EditProfilePage> {
             )),
       ),
     );
+  }
+
+  void getStorageData() async {
+    final dataCount = GetStorage();
+    setState(() {
+      uid = dataCount.read(uid);
+      name = dataCount.hasData("name") ? dataCount.read("name") : "Enter Name";
+      name =
+          dataCount.hasData("email") ? dataCount.read("email") : "Enter Email";
+    });
   }
 }
