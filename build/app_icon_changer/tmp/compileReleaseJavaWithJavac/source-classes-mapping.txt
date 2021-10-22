@@ -1,0 +1,2 @@
+com/example/app_icon_changer/BuildConfig.java
+ com.example.app_icon_changer.BuildConfig
